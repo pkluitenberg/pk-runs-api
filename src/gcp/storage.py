@@ -2,9 +2,10 @@ import json
 
 from google.cloud import storage
 
+GCP_PROJECT='pk-runs'
 
 def read_json_from_google_cloud_storage(bucket: str, filename: str):
-    storage_client = storage.Client()
+    storage_client = storage.Client(project=GCP_PROJECT)
     bucket = storage_client.get_bucket(bucket)
     blob = bucket.blob(filename)
 
