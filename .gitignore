@@ -1,0 +1,11 @@
+# Byte-compiled 
+__pycache__/
+
+# Unit test / coverage reports
+.pytest_cache/
+
+#macOS files
+*.DS_Store
+
+# scratch work
+scratch.py
