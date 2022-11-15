@@ -1,6 +1,9 @@
 # Byte-compiled 
 __pycache__/
 
+#virtual environment
+env/
+
 # Unit test / coverage reports
 .pytest_cache/
 
