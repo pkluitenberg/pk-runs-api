@@ -1,6 +1,7 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
+
 from src.gcp.storage import read_json_from_google_cloud_storage
 
 GCS_BUCKET_NAME = 'pk-runs-data'

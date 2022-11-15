@@ -1,9 +1,10 @@
+from dataclasses import dataclass
+from unittest.mock import Mock, patch
+
 import pytest
 from fastapi.testclient import TestClient
 
-from src.main import app, GCS_BUCKET_NAME
-from dataclasses import dataclass
-from unittest.mock import patch, Mock
+from src.main import GCS_BUCKET_NAME, app
 
 
 class TestRoot:

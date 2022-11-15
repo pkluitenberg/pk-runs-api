@@ -1,5 +1,6 @@
-import requests
 from typing import Union
+
+import requests
 
 
 class Strava:

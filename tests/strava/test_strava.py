@@ -1,9 +1,9 @@
-from unittest.mock import patch, Mock
+from dataclasses import dataclass
+from unittest.mock import Mock, patch
 
 import pytest
 
 from src.strava.strava import *
-from dataclasses import dataclass
 
 TEST_CLIENT_ID = 'test_client_id'
 TEST_CLIENT_SECRET = 'test_client_secret'
