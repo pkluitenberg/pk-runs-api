@@ -5,6 +5,7 @@ import requests
 
 class Strava:
     def __init__(self, client_id: str, client_secret: str, refresh_token: str, athlete_id: str):
+        self.base_url = 'https://www.strava.com/api/v3'
         self.client_id = client_id
         self.client_secret = client_secret
         self.refresh_token = refresh_token
@@ -22,11 +23,11 @@ class Strava:
         return r.json()
 
     def get_activities_by_page(self, per_page: int, page: int = 1):
-        endpoint_url = f'https://www.strava.com/api/v3/athlete/activities?page={page}&per_page={per_page}'
+        endpoint_url = f'{self.base_url}/athlete/activities?page={page}&per_page={per_page}'
         return self._get(endpoint_url)
 
     def get_athlete_stats(self, athlete_id: Union[int, str]):
-        endpoint_url = f'https://www.strava.com/api/v3/athletes/{athlete_id}/stats'
+        endpoint_url = f'{self.base_url}/athletes/{athlete_id}/stats'
         return self._get(endpoint_url)
 
     def get_all_activities(self, per_page: int, page: int = 1):
@@ -40,3 +41,7 @@ class Strava:
             all_activities.extend(activities)
             page = page+1
         return all_activities
+
+    def get_activity_by_id(self, activity_id: int, include_all_efforts: bool = False):
+        endpoint_url = f'{self.base_url}/activities/{activity_id}?include_all_efforts={include_all_efforts}'
+        return self._get(endpoint_url)

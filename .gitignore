@@ -11,4 +11,4 @@ env/
 *.DS_Store
 
 # scratch work
-scratch.py
+scratch.*
