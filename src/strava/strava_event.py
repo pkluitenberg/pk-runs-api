@@ -45,7 +45,7 @@ class StravaEvent:
         write_json_to_google_cloud_storage(
             all_activities_filtered, bucket=GCS_BUCKET_NAME, filename='allActivities.json')
 
-        strava_client = Strava(client_id=STRAVA_CLIENT_ID,
+        strava_client = StravaApi(client_id=STRAVA_CLIENT_ID,
                                client_secret=STRAVA_CLIENT_SECRET,
                                refresh_token=STRAVA_API_REFRESH_TOKEN,
                                athlete_id=STRAVA_ATHLETE_ID)
