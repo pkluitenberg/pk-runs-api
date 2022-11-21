@@ -21,6 +21,7 @@ class StravaApi:
     def _get(self, endpoint_url: str):
         r = requests.get(endpoint_url, headers={
             'Authorization': f'Bearer {self.access_token}'})
+        r.raise_for_status()
         return r.json()
 
     def get_activities_by_page(self, per_page: int, page: int = 1):
