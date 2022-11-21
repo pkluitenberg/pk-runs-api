@@ -23,7 +23,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 origins = [
     'http://pk-runs.herokuapp.com',
-    'http://localhost:3000'
+    'https://strava.com',
+    # 'http://localhost:3000',
 ]
 
 app.add_middleware(
