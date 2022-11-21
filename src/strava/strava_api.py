@@ -1,10 +1,11 @@
 from typing import Union
 
 import requests
+import logging
 
 
-class Strava:
-    def __init__(self, client_id: str, client_secret: str, refresh_token: str, athlete_id: str):
+class StravaApi:
+    def __init__(self, client_id: int, client_secret: str, refresh_token: str, athlete_id: str):
         self.base_url = 'https://www.strava.com/api/v3'
         self.client_id = client_id
         self.client_secret = client_secret
@@ -30,7 +31,7 @@ class Strava:
         endpoint_url = f'{self.base_url}/athletes/{athlete_id}/stats'
         return self._get(endpoint_url)
 
-    def get_all_activities(self, per_page: int, page: int = 1):
+    def get_all_activities(self, per_page: int = 100, page: int = 1):
         last_page = False
         all_activities = []
         while not last_page:
@@ -39,6 +40,7 @@ class Strava:
             if len(activities) < per_page:
                 last_page = True
             all_activities.extend(activities)
+            logging.info(f'Retreiving activities... Page: {page} Activities: {len(activities)}')
             page = page+1
         return all_activities
 

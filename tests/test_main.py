@@ -4,8 +4,9 @@ from unittest.mock import Mock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.main import GCS_BUCKET_NAME, app
+from src.main import app
 
+TEST_GCS_BUCKET_NAME='pk-runs-data'
 
 class TestRoot:
     @dataclass
@@ -48,7 +49,7 @@ class TestAllActivities:
 
     def test_read_json_from_gcs_called(self, setup: Fixture):
         setup.mock_read_json_from_gcs.assert_called_once_with(
-            bucket=GCS_BUCKET_NAME, filename='allActivities.json')
+            bucket=TEST_GCS_BUCKET_NAME, filename='allActivities.json')
 
     def test_get_expected_return_value(self, setup: Fixture):
         assert setup.response.json() == {'test': "response"}
@@ -76,7 +77,7 @@ class TestAllStats:
 
     def test_read_json_from_gcs_called(self, setup: Fixture):
         setup.mock_read_json_from_gcs.assert_called_once_with(
-            bucket=GCS_BUCKET_NAME, filename='allStats.json')
+            bucket=TEST_GCS_BUCKET_NAME, filename='allStats.json')
 
     def test_get_expected_return_value(self, setup: Fixture):
         assert setup.response.json() == {'test': "response"}

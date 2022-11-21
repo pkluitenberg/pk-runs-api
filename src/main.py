@@ -1,11 +1,19 @@
-from fastapi import APIRouter, FastAPI, status, Query
+import os
+
+from dotenv import load_dotenv
+from fastapi import APIRouter, BackgroundTasks, FastAPI, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from fastapi.security import OAuth2PasswordBearer
+
 from src.gcp.storage import read_json_from_google_cloud_storage
 from src.models.event import Event
+from src.strava.strava_event import StravaEvent
 
-GCS_BUCKET_NAME = 'pk-runs-data'
+load_dotenv()
+
+
+GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME')
 
 app = FastAPI(title='PK Runs API')
 
@@ -61,8 +69,18 @@ def event_subscription_validation(token: str = Query(default=None, alias="hub.ve
 
 
 @api_router.post('/events')
-def event(event: Event):
+async def event(event: Event, background_tasks: BackgroundTasks):
+    # need this to return 200 asyncronously
+    # need this to validate that it's a legit event before it get's started
     print(event)
+    if event.object_type == 'activity':
+        activity_id = event.object_id
+        if event.aspect_type == 'create':
+            background_tasks.add_task(StravaEvent.create, activity_id)
+        if event.aspect_type == 'delete':
+            background_tasks.add_task(StravaEvent.delete, activity_id)
+    else:
+        pass
     return Response(status_code=status.HTTP_200_OK)
 
 

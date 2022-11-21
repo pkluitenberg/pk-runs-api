@@ -4,6 +4,9 @@ __pycache__/
 #virtual environment
 env/
 
+#secrets
+.env
+
 # Unit test / coverage reports
 .pytest_cache/
 
