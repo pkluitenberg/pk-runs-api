@@ -1,5 +1,3 @@
-from typing import Union
-
 import requests
 import logging
 
@@ -28,7 +26,7 @@ class StravaApi:
         endpoint_url = f'{self.base_url}/athlete/activities?page={page}&per_page={per_page}'
         return self._get(endpoint_url)
 
-    def get_athlete_stats(self, athlete_id: Union[int, str]):
+    def get_athlete_stats(self, athlete_id: int | str):
         endpoint_url = f'{self.base_url}/athletes/{athlete_id}/stats'
         return self._get(endpoint_url)
 

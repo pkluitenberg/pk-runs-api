@@ -1,5 +1,4 @@
 import os
-from typing import Union
 
 from dotenv import load_dotenv
 
@@ -22,7 +21,7 @@ class StravaEvent:
         # should have some validations on the events sent over
         pass 
 
-    def create(activity_id: Union[str, int]):
+    def create(activity_id: str | int):
         strava_client = StravaApi(client_id=STRAVA_CLIENT_ID,
                                client_secret=STRAVA_CLIENT_SECRET,
                                refresh_token=STRAVA_API_REFRESH_TOKEN,
@@ -37,7 +36,7 @@ class StravaEvent:
         write_json_to_google_cloud_storage(
             stats, bucket=GCS_BUCKET_NAME, filename='allStats.json')
 
-    def delete(activity_id: Union[str, int]):
+    def delete(activity_id: str | int):
         all_activities = read_json_from_google_cloud_storage(
             bucket=GCS_BUCKET_NAME, filename='allActivities.json')
         all_activities_filtered = [
