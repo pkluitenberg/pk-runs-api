@@ -1,20 +1,15 @@
-import os
-
-from dotenv import load_dotenv
 from fastapi import APIRouter, BackgroundTasks, FastAPI, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from fastapi.security import OAuth2PasswordBearer
 
-from src.gcp.storage import read_json_from_google_cloud_storage
+from src.constants import (STRAVA_API_REFRESH_TOKEN, STRAVA_ATHLETE_ID,
+                           STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET,
+                           STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN)
+from src.database import Database
 from src.models.event import Event
+from src.strava.strava_api import StravaApi
 from src.strava.strava_event import StravaEvent
-from src.constants import STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN
-
-load_dotenv()
-
-
-GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME')
 
 app = FastAPI(title='PK Runs API')
 
@@ -44,18 +39,18 @@ async def root():
 
 @api_router.get('/all_activities')
 def all_activities():
-    # should now pull from MongoDB
-    content = read_json_from_google_cloud_storage(
-        bucket=GCS_BUCKET_NAME, filename='allActivities.json')
+    content = Database().find_all_activities()
     return JSONResponse(content=content)
 
 
-@api_router.get('/all_stats')
-def all_activities():
-    # should actually just pull directly from the strava API. No need to manage state.
-    content = read_json_from_google_cloud_storage(
-        bucket=GCS_BUCKET_NAME, filename='allStats.json')
-    return JSONResponse(content=content)
+@api_router.get('/stats')
+def stats():
+    client = StravaApi(client_id=STRAVA_CLIENT_ID,
+                       client_secret=STRAVA_CLIENT_SECRET,
+                       refresh_token=STRAVA_API_REFRESH_TOKEN,
+                       athlete_id=STRAVA_ATHLETE_ID)
+
+    return JSONResponse(content=client.get_athlete_stats())
 
 
 @api_router.get('/events')
