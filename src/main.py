@@ -44,7 +44,6 @@ def all_activities():
 @api_router.get('/stats')
 def stats():
     client = StravaApi()
-
     return JSONResponse(content=client.get_athlete_stats())
 
 
