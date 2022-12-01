@@ -1,5 +1,3 @@
-from src.constants import (STRAVA_API_REFRESH_TOKEN, STRAVA_ATHLETE_ID,
-                           STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET)
 from src.database import Database
 from src.models.event import Event
 from src.strava.strava_api import StravaApi
@@ -11,10 +9,7 @@ class StravaEvent:
         pass
 
     def create(activity_id: int):
-        strava_client = StravaApi(client_id=STRAVA_CLIENT_ID,
-                                  client_secret=STRAVA_CLIENT_SECRET,
-                                  refresh_token=STRAVA_API_REFRESH_TOKEN,
-                                  athlete_id=STRAVA_ATHLETE_ID)
+        strava_client = StravaApi()
         activity_data = strava_client.get_activity_by_id(activity_id)
 
         db = Database()

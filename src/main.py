@@ -3,9 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from fastapi.security import OAuth2PasswordBearer
 
-from src.constants import (STRAVA_API_REFRESH_TOKEN, STRAVA_ATHLETE_ID,
-                           STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET,
-                           STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN)
+from src.constants import STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN
 from src.database import Database
 from src.models.event import Event
 from src.strava.strava_api import StravaApi
@@ -45,10 +43,7 @@ def all_activities():
 
 @api_router.get('/stats')
 def stats():
-    client = StravaApi(client_id=STRAVA_CLIENT_ID,
-                       client_secret=STRAVA_CLIENT_SECRET,
-                       refresh_token=STRAVA_API_REFRESH_TOKEN,
-                       athlete_id=STRAVA_ATHLETE_ID)
+    client = StravaApi()
 
     return JSONResponse(content=client.get_athlete_stats())
 
