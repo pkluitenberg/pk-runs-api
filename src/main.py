@@ -9,6 +9,7 @@ from fastapi.security import OAuth2PasswordBearer
 from src.gcp.storage import read_json_from_google_cloud_storage
 from src.models.event import Event
 from src.strava.strava_event import StravaEvent
+from src.constants import STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN
 
 load_dotenv()
 
@@ -62,10 +63,9 @@ def event_subscription_validation(token: str = Query(default=None, alias="hub.ve
                                   challenge: str = Query(
                                       default=None, alias="hub.challenge"),
                                   mode: str = Query(default=None, alias="hub.mode")):
-    verify_token = 'distort-baffling-immortal-unlatch-showy'
 
     if mode and token:
-        if mode == 'subscribe' and token == verify_token:
+        if mode == 'subscribe' and token == STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN:
             print('WEBHOOK_VERIFIED')
             return JSONResponse(content={"hub.challenge": challenge}, status_code=200)
     return Response(status_code=status.HTTP_403_FORBIDDEN)
