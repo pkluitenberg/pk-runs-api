@@ -1,5 +1,6 @@
-import requests
 import logging
+
+import requests
 
 
 class StravaApi:
@@ -26,8 +27,8 @@ class StravaApi:
         endpoint_url = f'{self.base_url}/athlete/activities?page={page}&per_page={per_page}'
         return self._get(endpoint_url)
 
-    def get_athlete_stats(self, athlete_id: int | str):
-        endpoint_url = f'{self.base_url}/athletes/{athlete_id}/stats'
+    def get_athlete_stats(self):
+        endpoint_url = f'{self.base_url}/athletes/{self.athlete_id}/stats'
         return self._get(endpoint_url)
 
     def get_all_activities(self, per_page: int = 100, page: int = 1):
