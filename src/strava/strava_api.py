@@ -1,6 +1,6 @@
 import requests
 
-from constants import (STRAVA_API_REFRESH_TOKEN, STRAVA_ATHLETE_ID,
+from src.constants import (STRAVA_API_REFRESH_TOKEN, STRAVA_ATHLETE_ID,
                        STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET)
 
 
@@ -16,13 +16,13 @@ class StravaApi:
         
 
     def _refresh_access_token(self) -> str:
-        refresh_token_url = f'https://www.strava.com/oauth/token?client_id={self.client_id}&client_secret={self.client_secret}&refresh_token={self.refresh_token}&grant_type=refresh_token'
+        refresh_token_url = f'https://www.strava.com/oauth/token?client_id={self._client_id}&client_secret={self._client_secret}&refresh_token={self._refresh_token}&grant_type=refresh_token'
         r = requests.post(refresh_token_url)
         return r.json().get('access_token')
 
     def _get(self, endpoint_url: str):
         r = requests.get(endpoint_url, headers={
-            'Authorization': f'Bearer {self.access_token}'})
+            'Authorization': f'Bearer {self._access_token}'})
         r.raise_for_status()
         return r.json()
 

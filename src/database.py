@@ -6,7 +6,7 @@ class Database:
     url = MONGO_URL
 
     def __init__(self):
-        self._database = MongoClient(Database.url)[[MONGO_DB_NAME]]
+        self._database = MongoClient(Database.url)[MONGO_DB_NAME]
 
     def find_one(self, collection: str, query: dict) -> any:
         return self._database[collection].find_one(query)
