@@ -27,7 +27,7 @@ class StravaEvent:
         if bool(collection.find_one({'id': activity_id})):
             print(f'Sorry! Activity {activity_id} already exists...')
         else:
-            document_id = collection.insert_one(activity_data)
+            document_id = collection.insert_one(activity_data).inserted_id
             print(
                 f'Inserted activity {activity_id} Document ID: {document_id}')
 
@@ -36,11 +36,11 @@ class StravaEvent:
         db = mongo_client[MONGO_DB_NAME]
         collection = db[MONGO_ACTIVITIES_COLLECTION]
 
-        activity_to_delte = {'id': activity_id}
+        activity_to_delete = {'id': activity_id}
 
-        if bool(collection.find_one(activity_to_delte)):
-            document_id = collection.delete_one(activity_to_delte)
-            print(f'Deleted activity {activity_id} Document ID: {document_id}')
+        if bool(collection.find_one(activity_to_delete)):
+            collection.delete_one(activity_to_delete)
+            print(f'Deleted activity {activity_id}')
 
         else:
             print(f'Sorry! Activity {activity_id} doesn"t exist...')

@@ -64,10 +64,10 @@ def event_subscription_validation(token: str = Query(default=None, alias="hub.ve
                                       default=None, alias="hub.challenge"),
                                   mode: str = Query(default=None, alias="hub.mode")):
 
-    if mode and token:
-        if mode == 'subscribe' and token == STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN:
-            print('WEBHOOK_VERIFIED')
-            return JSONResponse(content={"hub.challenge": challenge}, status_code=200)
+    print(f'Got mode {mode}...')
+    if mode == 'subscribe' and token == STRAVA_SUBSCRIPTION_VERIFICATION_TOKEN:
+        print('WEBHOOK_VERIFIED')
+        return JSONResponse(content={"hub.challenge": challenge}, status_code=200)
     return Response(status_code=status.HTTP_403_FORBIDDEN)
 
 
