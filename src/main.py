@@ -16,7 +16,7 @@ api_router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 origins = [
-    'http://pk-runs.herokuapp.com',
+    'https://pk-runs-frontend.up.railway.app',
     'https://strava.com',
     # 'http://localhost:3000',
 ]
