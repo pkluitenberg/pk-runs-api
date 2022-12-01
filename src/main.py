@@ -43,6 +43,7 @@ async def root():
 
 @api_router.get('/all_activities')
 def all_activities():
+    # should now pull from MongoDB
     content = read_json_from_google_cloud_storage(
         bucket=GCS_BUCKET_NAME, filename='allActivities.json')
     return JSONResponse(content=content)
@@ -50,6 +51,7 @@ def all_activities():
 
 @api_router.get('/all_stats')
 def all_activities():
+    # should actually just pull directly from the strava API. No need to manage state.
     content = read_json_from_google_cloud_storage(
         bucket=GCS_BUCKET_NAME, filename='allStats.json')
     return JSONResponse(content=content)
@@ -71,8 +73,7 @@ def event_subscription_validation(token: str = Query(default=None, alias="hub.ve
 
 @api_router.post('/events')
 async def event(event: Event, background_tasks: BackgroundTasks):
-    # need this to return 200 asyncronously
-    # need this to validate that it's a legit event before it get's started
+    # May want to do additonal validation beyond it just fitting the Event object
     print(event)
     if event.object_type == 'activity':
         activity_id = event.object_id
