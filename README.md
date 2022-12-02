@@ -15,7 +15,7 @@ Environment variables can be found in the `.env` folder.
 ## Install
 
     # create virtual env
-    python3.8 -m venv env
+    python3 -m venv env
 
     #activate virtual env
     source env/bin/activate
