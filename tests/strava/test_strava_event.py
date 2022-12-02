@@ -39,7 +39,7 @@ class TestStravaEvent:
 
     def test_insert_activity_called(self, setup: Fixture):
         setup.mock_database.insert_activity.assert_called_once_with(
-            activity_id=12345, activity_data={'fake': 'activity'})
+            activity_id=12345, data={'fake': 'activity'})
 
     def test_delete_activity_called(self, setup: Fixture):
         setup.mock_database.delete_activity.assert_called_once_with(

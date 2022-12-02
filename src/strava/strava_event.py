@@ -17,7 +17,7 @@ class StravaEvent:
 
         db = Database()
         db.insert_activity(activity_id=activity_id,
-                           activity_data=activity_data)
+                           data=activity_data)
 
     @staticmethod
     def delete(activity_id: int):
