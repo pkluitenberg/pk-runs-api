@@ -36,8 +36,9 @@ async def root():
 
 
 @api_router.get('/all_activities')
-def all_activities():
-    content = Database().find_all_activities()
+def all_activities(fields: str = ""):
+    fields_to_include = fields.split(',') if fields else []
+    content = Database().find_all_activities(fields_to_include=fields_to_include)
     return JSONResponse(content=content)
 
 
