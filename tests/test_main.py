@@ -33,26 +33,30 @@ class TestAllActivities:
     class Fixture:
         response: Mock
         mock_database: Mock
+        expected_fields_to_include: list
 
-    @pytest.fixture
+    @pytest.fixture(params=[{'input': '?fields=distance,time', 'expected_value': ['distance', 'time']},
+                            {'input': '', 'expected_value': []}],
+                    ids=['fields provided', 'no fields provided'])
     @patch('src.main.Database', autospec=True)
-    def setup(self, mock_database_constructor):
+    def setup(self, mock_database_constructor, request):
         mock_database = Mock()
         mock_database_constructor.return_value = mock_database
         mock_database.find_all_activities.return_value = [
             {'id': "fake_activity_id"}]
 
         client = TestClient(app)
-        response = client.get("/all_activities")
-        print(response)
+        response = client.get(f"/all_activities{request.param.get('input')}")
         return TestAllActivities.Fixture(response=response,
-                                         mock_database=mock_database)
+                                         mock_database=mock_database,
+                                         expected_fields_to_include=request.param.get('expected_value'))
 
     def test_status_code_200(self, setup: Fixture):
         assert setup.response.status_code == 200
 
-    def test_read_json_from_gcs_called(self, setup: Fixture):
-        setup.mock_database.find_all_activities.assert_called_once_with()
+    def test_find_all_activities_called(self, setup: Fixture):
+        setup.mock_database.find_all_activities.assert_called_once_with(
+            fields_to_include=setup.expected_fields_to_include)
 
     def test_get_expected_return_value(self, setup: Fixture):
         assert setup.response.json() == [{'id': "fake_activity_id"}]
@@ -80,7 +84,7 @@ class TestAllStats:
     def test_status_code_200(self, setup: Fixture):
         assert setup.response.status_code == 200
 
-    def test_read_json_from_gcs_called(self, setup: Fixture):
+    def test_get_athlete_stats_called(self, setup: Fixture):
         setup.mock_strava_api.get_athlete_stats.assert_called_once_with()
 
     def test_get_expected_return_value(self, setup: Fixture):

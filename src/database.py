@@ -17,8 +17,10 @@ class Database:
     def delete_one(self, collection: str, query: dict) -> dict:
         return self._database[collection].delete_one(query)
 
-    def find_all(self, collection: str, exclude_mongo_ids: bool = False) -> cursor.Cursor:
-        return self._database[collection].find({}, {'_id': 0} if exclude_mongo_ids else {})
+    def find_all(self, collection: str, fields_to_include: list = []) -> cursor.Cursor:
+        projection = {'_id': 0}
+        projection.update({field: 1 for field in fields_to_include})
+        return self._database[collection].find({}, projection=projection)
 
     def insert_activity(self, activity_id: int, data: dict) -> str:
         if bool(self.find_one(
@@ -42,6 +44,6 @@ class Database:
                 f'Could not delete activity {activity_id}. Check if activity exists.')
             return False
 
-    def find_all_activities(self) -> list:
+    def find_all_activities(self, fields_to_include: list = []) -> list:
         return list(self.find_all(collection=MONGO_ACTIVITIES_COLLECTION,
-                                  exclude_mongo_ids=True))
+                                  fields_to_include=fields_to_include))
